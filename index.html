@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>My Game</title>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+        <a-cylinder id="cylinder" position="0 0 -5" radius="5" height="0.1" rotation="0 0 0"></a-cylinder>
+        <a-text value="Press space to lift me" position="-4 3 0" color="#000000" scale="4 4 4"></a-text>
+        <a-camera id="camera" position="0 2 5" wasd-controls="enabled: true"></a-camera>
+    </a-scene>
+    </body>
+    <script>
+        let bounceUp = true;
+        let bounceHeight = 2;
+        let bounceSpeed = 0.05;
+
+        function updateCylinderPosition() {
+            const cylinder = document.querySelector("#cylinder");
+            let position = cylinder.getAttribute("position");
+
+            if (bounceUp) {
+                position.y += bounceSpeed;
+                if (position.y >= bounceHeight + 1) {
+                    bounceUp = false;
+                }
+            } else {
+                position.y -= bounceSpeed;
+                if (position.y <= bounceHeight) {
+                    bounceUp = true;
+                }
+            }
+
+            cylinder.setAttribute("position", position);
+        }
+
+        setInterval(updateCylinderPosition, 1000 / 60);
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === " ") {
+                const cylinder = document.querySelector("#cylinder");
+                let position = cylinder.getAttribute("position");
+                position.y += 1;
+                cylinder.setAttribute("position", position);
+            }
+        });
+    </script>
+</html>
